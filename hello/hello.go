@@ -1,26 +1,29 @@
 package main
 
 import (
-	"github.com/famigo/ppu"
+	"github.com/famigo/header/ines"
+	"github.com/famigo/io/ppu"
 )
 
-//famigo:inesmap
-const iNESMap = 0
+//header
+const (
+	iNESMap = ines.MAP(0)
+	iNESPrg = ines.PRG(2)
+	iNESChr = ines.CHR(1)
+	iNESMir = ines.MIR(1)
+)
 
-//famigo:inesprg
-const iNESPrg = 2
+//chr roms
+var (
+	//famigo:rom chr:? inc:res/graphics.chr
+	_ byte
 
-//famigo:ineschr
-const iNESChr = 1
+	//famigo:rom chr:? inc:res/graphics.chr
+	_ byte
+)
 
-//famigo:inesmir
-const iNESMir = 1
-
-//famigo:chr ? res/graphics.chr
-var _ byte
-
-//famigo:chr ? res/graphics.chr
-var _ byte
+//famigo:rom prg:?
+var pal = [4]byte{0x0F, 0x30, 0x30, 0x30}
 
 func main() {
 	for row := byte(0); row < ppu.ScreenHeightTiles; row++ {
@@ -33,12 +36,16 @@ func main() {
 		ppu.SetNameTableTile(ppu.NameTableTopLeft, byte(14), byte(i), tile)
 	}
 
-	ppu.SetBackgroundPallete(0, [4]byte{0x0F, 0x30, 0x30, 0x30})
+	ppu.SetBackgroundPallete(0, pal)
 
-	ppu.CTRL <- 1<<7 | 1<<3               //10001000
-	ppu.MASK <- 1<<1 | 1<<2 | 1<<3 | 1<<4 //00011110
+	ppu.CTRL <- ppu.SelectLeftPatternTableForBackground |
+		ppu.SelectRightPatternTableFor8x8Sprites |
+		ppu.EnableNMI
+	ppu.MASK <- ppu.ShowBackgroundInLefmostColumn |
+		ppu.ShowSpritesInLeftmostColumn |
+		ppu.ShowBackground |
+		ppu.ShowSprites
 
 	for {
-
 	}
 }

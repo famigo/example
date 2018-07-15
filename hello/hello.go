@@ -5,7 +5,7 @@ import (
 	"github.com/famigo/io/ppu"
 )
 
-//header
+// Header
 const (
 	iNESMap = ines.MAP(0)
 	iNESPrg = ines.PRG(2)
@@ -13,7 +13,7 @@ const (
 	iNESMir = ines.MIR(1)
 )
 
-//chr roms
+// CHR roms
 var (
 	//famigo:rom chr:? inc:res/graphics.chr
 	_ byte
@@ -47,5 +47,6 @@ func main() {
 		ppu.ShowSprites
 
 	for {
+		//game loop
 	}
 }

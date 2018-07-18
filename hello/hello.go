@@ -14,15 +14,14 @@ const (
 )
 
 // CHR roms
-var (
-	//famigo:rom chr:? inc:res/graphics.chr
-	_ byte
-
-	//famigo:rom chr:? inc:res/graphics.chr
-	_ byte
+const (
+	//famigo:chr inc:res/graphics.chr
+	_ = 0
+	//famigo:chr inc:res/graphics.chr
+	_
 )
 
-//famigo:rom prg:?
+//famigo:prg
 var pal = [4]byte{0x0F, 0x30, 0x30, 0x30}
 
 func main() {

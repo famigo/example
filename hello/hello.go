@@ -17,29 +17,29 @@ const (
 const (
 	//famigo:chr inc:res/graphics.chr
 	_ = 0
-	//famigo:chr inc:res/graphics.chr
+	//famigo:chr inc:res/graphics.chrg
 	_
 )
 
 //famigo:prg
-var pal = [4]byte{0x0F, 0x30, 0x30, 0x30}
+var pal = [...]byte{
+	0x0F, 0x30, 0x30, 0x30,
+	0x0F, 0x30, 0x30, 0x30,
+	0x0F, 0x30, 0x30, 0x30,
+	0x0F, 0x30, 0x30, 0x30}
+
+// famigo:prg
+var nam = [30][32]byte{}
 
 func main() {
-	for row := byte(0); row < ppu.ScreenHeightTiles; row++ {
-		for col := byte(0); col < ppu.ScreenWidthTiles; col++ {
-			ppu.SetNameTableTile(ppu.NameTableTopLeft, row, col, 0)
-		}
-	}
+	ppu.SetNameTable(ppu.NameTableTopLeft, &nam)
+	ppu.SetBackgroundPalletes(pal[:])
 
-	for i, tile := range []byte("Hello FamiGo") {
-		ppu.SetNameTableTile(ppu.NameTableTopLeft, byte(14), byte(i), tile)
-	}
-
-	ppu.SetBackgroundPallete(0, pal)
-
-	ppu.CTRL <- ppu.SelectLeftPatternTableForBackground |
+	ctrl := ppu.SelectLeftPatternTableForBackground |
 		ppu.SelectRightPatternTableFor8x8Sprites |
 		ppu.EnableNMI
+
+	ppu.CTRL <- ctrl
 	ppu.MASK <- ppu.ShowBackgroundInLefmostColumn |
 		ppu.ShowSpritesInLeftmostColumn |
 		ppu.ShowBackground |
